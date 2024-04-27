@@ -1,0 +1,27 @@
+name: Rust
+
+on:
+  workflow_dispatch:
+    branches:
+      - 'master'
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Install Dependencies
+      run: apt install -y rust nasm clang ffmpeg vapoursynth
+    - name: Build
+      run: cargo build --release
+    - name: Create prerelease
+      uses: softprops/action-gh-release@v2
+      with:
+        prerelease: true
+        tag_name: latest
+        files: target/release/av1an
+        fail_on_unmatched_files: true
